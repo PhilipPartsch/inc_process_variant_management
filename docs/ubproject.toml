@@ -1,0 +1,27 @@
+[needs]
+id_required = true
+id_length = 3
+extra_options = [ "safety_state", "security_state" ]
+statuses = [{name="draft"}, {name="accepted"}]
+
+[[needs.types]]
+directive = "req"
+title = "Requirement"
+prefix = "R_"
+color = "#BFD8D2"
+style = "node"
+
+[[needs.types]]
+directive = "spec"
+title = "Specification"
+prefix = "S_"
+color = "#FEDCD2"
+style = "node"
+
+[needs.global_options]
+safety_state = {default="QM"}
+security_state = {default="No"}
+
+[needs.warnings]
+safety_state_out_of_expected_values = "safety_state not in ['QM', 'ASIL_A', 'ASIL_B', 'ASIL_C', 'ASIL_D']"
+security_state_out_of_expected_values = "security_state not in ['No', 'Yes']"
