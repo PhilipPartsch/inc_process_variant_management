@@ -1,0 +1,96 @@
+name: Render documentation
+
+# see https://github.com/actions/setup-python#using-setup-python-with-a-self-hosted-runner
+# for artifact handling and SBOM: https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+
+
+on:
+  push:
+  #pull_request: # Not necessary, as it is already been executed on push
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  pagesbranch: gh-pages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3"
+        cache: 'pip' # caching pip dependencies
+    - name: print versions for debugging
+      run: python --version ; pip --version ; whoami ; pwd
+    - name: Install graphviz & default-jdk
+      if: False
+      run: |
+        sudo apt-get update
+        sudo apt-get upgrade --yes
+        sudo apt-get install graphviz default-jdk
+        sudo apt-get upgrade --yes
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install setuptools
+        python -m pip install -r ./docs/requirements.txt
+    - name: Lint the project with sphinx-lint
+      run: |
+        sphinx-lint
+    - name: Render the documentation
+      run: >
+        sphinx-build
+        -b html ./docs ./public
+        --jobs=auto
+        --show-traceback
+        --fail-on-warning
+        --keep-going
+    - name: Archive sphinx public folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: sphinx-public
+        path: |
+          ./public/
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
+
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    # if: github.ref_name == github.event.repository.default_branch
+    steps:
+      - name: Checkout github pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.pagesbranch }}
+      - name: Download sphinx public folder
+        uses: actions/download-artifact@v4
+        with:
+          name: sphinx-public
+          path: ./main/
+      - name: Push new content to github pages branch
+        # copied from documentation of https://github.com/actions/checkout
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "updated main branch with docs from commit ${{ github.sha }}"
+          git push
