@@ -118,9 +118,9 @@ epub_show_urls = 'footnote'
 
 # -- extension configuration: ifelse
 
-#ifelse_variants = {
-#  'ifelse_OS': 'ifelse_Linux',
-#}
+ifelse_variants = {
+  'ifelse_OS': '',
+}
 
 # -- Sphinx-Needs
 
