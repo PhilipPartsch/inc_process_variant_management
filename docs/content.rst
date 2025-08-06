@@ -10,11 +10,11 @@ Content
 
 .. req:: Example requirement two
    :id: R_EXAMPLE_REQUIREMENT_TWO
-   :status: accepted
-   :safety_state: ASIL_B
+   :status: QNX:accepted,Linux:draft,draft
+   :safety_state: QNX:ASIL_D,Linux:ASIL_B,QM
    :security_state: Yes
 
-   Set safety_state manual to ASIL_B and security_state manual to Yes.
+   Set safety_state is set by variant management to :ndf:`copy("safety_state")`.
 
 .. if:: OS == "Linux"
 
@@ -39,7 +39,7 @@ Content
 .. else::
 
    .. req:: Variant OS undefined
-      :id: R_undefined
+      :id: R_UNDEFINED_OS
       :status: accepted
       :safety_state: QM
       :security_state: No
@@ -57,5 +57,6 @@ Content
    :status: draft
    :safety_state: ASIL_B
    :security_state: Yes
+   :satisfies: QNX:R_QNX,Linux:R_LINUX,R_UNDEFINED_OS
 
    Set safety_state manual to ASIL_B and security_state manual to Yes.
