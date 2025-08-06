@@ -3,6 +3,7 @@ name: Render documentation
 # see https://github.com/actions/setup-python#using-setup-python-with-a-self-hosted-runner
 # for artifact handling and SBOM: https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
 
+
 on:
   push:
   #pull_request: # Not necessary, as it is already been executed on push
@@ -19,6 +20,7 @@ concurrency:
 
 env:
   FORCE_COLOR: "1"
+  pagesbranch: gh-pages
 
 jobs:
   build:
@@ -75,18 +77,20 @@ jobs:
     needs: build
     if: github.ref_name == github.event.repository.default_branch
     steps:
+      - name: Checkout github pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.pagesbranch }}
       - name: Download sphinx public folder
         uses: actions/download-artifact@v4
         with:
           name: sphinx-public
-          path: ./public/
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          path: ./main/
+      - name: Push new content to github pages branch
+        # copied from documentation of https://github.com/actions/checkout
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "updated main branch with docs from commit ${{ github.sha }}"
+          git push
