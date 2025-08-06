@@ -16,7 +16,7 @@ Content
 
    Set safety_state manual to ASIL_B and security_state manual to Yes.
 
-.. if:: ifelse_OS == "ifelse_Linux"
+.. if:: OS == "Linux"
 
    .. req:: Variant Linux
       :id: R_LINUX
@@ -26,7 +26,7 @@ Content
 
       Requirement to support Linux as OS.
 
-.. elif:: ifelse_OS == "ifelse_QNX"
+.. elif:: OS == "QNX"
 
    .. req:: Variant QNX
       :id: R_QNX
