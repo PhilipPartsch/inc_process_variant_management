@@ -91,6 +91,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.pagesbranch }}
+      - name: Remove old content from ${{ env.pagesbranch }}
+        run: |
+          rm -rf ./main
       - name: Download sphinx public folder
         uses: actions/download-artifact@v4
         with:
