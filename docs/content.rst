@@ -57,6 +57,6 @@ Content
    :status: draft
    :safety_state: ASIL_B
    :security_state: Yes
-   :satisfies: QNX:R_QNX,Linux:R_LINUX
+   :satisfies: QNX:R_QNX,Linux:R_LINUX,R_EXAMPLE_SPECIFICATION_ONE
 
    Set safety_state manual to ASIL_B and security_state manual to Yes.
