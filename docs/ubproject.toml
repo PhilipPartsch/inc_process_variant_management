@@ -24,7 +24,7 @@ safety_state = {default="QM"}
 security_state = {default="No"}
 
 [[needs.extra_links]]
-option = "satisfies",
+option = "satisfies"
 incoming = "satisfied by"
 outgoing = "satisfies"
 copy = false
