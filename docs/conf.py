@@ -27,7 +27,7 @@ import datetime
 currentDateTime = datetime.datetime.now()
 date = currentDateTime.date()
 
-project = 'Playground'
+project = 'Evaluate Variant Management with Sphinx-Needs'
 copyright = f'2025 - {date.year}, PhilipPartsch'
 author = 'PhilipPartsch'
 
@@ -119,7 +119,7 @@ epub_show_urls = 'footnote'
 # -- extension configuration: ifelse
 
 ifelse_variants = {
-  'ifelse_OS': '',
+  'OS': '',
 }
 
 # -- Sphinx-Needs
