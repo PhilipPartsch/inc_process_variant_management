@@ -36,5 +36,5 @@ safety_state_out_of_expected_values = "safety_state not in ['QM', 'ASIL_A', 'ASI
 security_state_out_of_expected_values = "security_state not in ['No', 'Yes']"
 
 [needs.variants]
-Linux = "True"
+Linux = "False"
 QNX = "False"
