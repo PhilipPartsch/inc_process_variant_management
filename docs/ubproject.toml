@@ -2,7 +2,9 @@
 id_required = true
 id_length = 3
 extra_options = [ "safety_state", "security_state" ]
-statuses = [{name="draft"}, {name="accepted"}]
+# statuses = [{name="draft"}, {name="accepted"}]
+# statuses does not support needs_variants, we have to disable it here.
+variant_options = ["status", "safety_state", "security_state", "satisfies"]
 
 [[needs.types]]
 directive = "req"
@@ -22,6 +24,17 @@ style = "node"
 safety_state = {default="QM"}
 security_state = {default="No"}
 
+[[needs.extra_links]]
+option = "satisfies"
+incoming = "satisfied by"
+outgoing = "satisfies"
+copy = false
+
 [needs.warnings]
+status_out_of_expected_values = "status not in ['draft', 'accepted']"
 safety_state_out_of_expected_values = "safety_state not in ['QM', 'ASIL_A', 'ASIL_B', 'ASIL_C', 'ASIL_D']"
 security_state_out_of_expected_values = "security_state not in ['No', 'Yes']"
+
+[needs.variants]
+Linux = "False"
+QNX = "False"

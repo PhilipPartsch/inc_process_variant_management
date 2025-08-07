@@ -59,6 +59,7 @@ jobs:
         --fail-on-warning
         --keep-going
         --define ifelse_variants.OS=Linux
+        --define needs_variants.Linux="True"
     - name: Render the documentation for QNX
       run: >
         sphinx-build
@@ -68,6 +69,7 @@ jobs:
         --fail-on-warning
         --keep-going
         --define ifelse_variants.OS=QNX
+        --define needs_variants.QNX="True"
     - name: Archive sphinx public folder
       uses: actions/upload-artifact@v4
       with:
